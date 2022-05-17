@@ -11,7 +11,7 @@ export function rotate(context, theta) {
 export function scale(context, sx, sy) {
   transform('scale', context, sx, sy);
 }
-
+// 实现对变换状态的管理
 export function save(context) {
   const { group } = context;
   const newGroup = createSVGElement('g');
@@ -26,6 +26,7 @@ export function restore(context) {
 }
 
 function transform(type, context, ...params) {
+  // type 是希望的变换种类：scale，translate，rotate 等
   const { group } = context;
   applyTransform(group, `${type}(${params.join(', ')})`);
 }
