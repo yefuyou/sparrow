@@ -2,15 +2,15 @@
 
 本项目是基于掘金课程[可视化入门：从 0 到 1 开发一个图表库](https://juejin.cn/book/7031893648145186824)进行的简易图表库开发
 
-## day1-环境配置初探
-
-### 遇到的问题
+### 遇到的问题&bug
 
 1. `cross-env DEBUG_MODE=1 npx jest`报错
 
    使用`npm run test`或者`npm run test-live即可`
+   
+2. git提交报错 `husky - pre-commit hook exited with code 1 (error)`
 
-
+[(53条消息) 使用pre commit钩子再git commit时报错“husky - pre-commit hook exited with code 1 (error)”_仙女爱吃鱼的博客-CSDN博客](https://blog.csdn.net/weixin_38318244/article/details/126184481)
 
 ## scale部分计算
 
@@ -157,3 +157,144 @@ const impureFn = (a, b, c) => impureMultiply(a, add(b, c));
 
 ### 函数柯里化（Currying）
 
+函数柯里化（Currying）的概念很简单：我们可以用少于期望数量的参数去调用一个函数，这个函数返回一个接受剩下参数的函数。
+
+```js
+const add = curry((x, y, z) => x + y + z);
+add(1)(2, 3); //6
+add(1, 2)(3); // 6
+add(1, 2, 3); // 6
+// 将第一个参数固定为 1
+const add1 = add(1);
+
+add1(2, 3) // 6 
+add1(3, 4) // 8
+
+// 变成一个单参数的函数
+const add1 = add(1, 0);
+const add2 = add(2, 0);
+const add3 = add(3, 0);
+
+// 复合成一个函数
+const add6 = x => add1(add2(add3(x)));
+
+add6(1); // 7
+add6(2); // 8
+```
+
+知道了 `curry` 函数的用途，那么接下来我们就来实现一个简单的版本。
+
+```js
+function curry(fn) {
+  // 获得函数参数的数量
+  const arity = fn.length;
+  return function curried(...args) {
+    // 如果当前收集到的参数数量大于需要的数量，那么执行该函数
+    if (args.length >= arity) return fn(...args);
+    // 否者，将传入的参数收集起来
+    // 下面的写法类似于
+    // return (...args1) => curried(...args, ...args1);
+    return curried.bind(null, ...args);
+  };
+}
+```
+
+最后说一下可以发现柯里化后的函数非常契合纯函数的输入一个输出一个的特点：接受一个参数，返回一个接受剩余参数的函数。
+
+### 函数复合（Compose）
+
+当一个值要经过多个函数转换，才能变成另外一个值，就可以把这些函数合成一个函数。这样，这个值就只用通过复合后的函数转换一次，就可以获得对应结果了。我们希望实现一个 `compose` 函数来自动帮助我们方便得合成函数，期望的使用方式如下。
+
+```js
+// 满足 Pointfreee，没有描述处理的数据
+const add6 = compose(add1, add2, add3);
+add6(1); // 7
+```
+
+这样的写法不仅合成很方便，并且也满足了 Pointfree 这种风格：代码中不用描述数据。这样的风格可以让我们移除不必要的函数命名，也能保证函数的通用性。
+
+```js
+// 不是 Pointfree, x 就是数据
+const add6 = x => add3(add2(add1(x)));
+
+// 不是 Pointfree, x 就是数据
+const add6 = x => compose(add1, add2, add3)(x);
+```
+
+## 坐标系理论
+
+其实坐标系本质上也是一个函数，和比例尺的不同的是：比例尺是将数据映射为视觉元素的属性，坐标系是将视觉元素的位置属性映射为在画布上的坐标。坐标系这个函数的函数签名如下:
+
+```ts
+// 输入是一个点，这个点的两个维度都是在 [0, 1] 的范围内
+// 输入是一个点，这个点是可以直接绘制到画布坐标上的点
+(point: [number, number]) => [number, number]
+```
+
+具体的使用看下面的这个例子。
+
+```js
+import { createLinear } from "./scale";
+import { createCoordinate, transpose, cartesian } from './coordinate';
+
+// 我们希望绘制一个散点图来看下面数据的分布
+const data = [
+  { height: 180, weight: 150 },
+  { height: 163, weight: 94 },
+  { height: 173, weight: 130 }
+];
+
+// 将数据的 height 映射为点的 x 属性（这里注意 range 是 [0, 1]）
+const scaleX = createLinear({
+  domain: [163, 180],
+  range: [0, 1]
+});
+
+// 将数据的 width 映射为点的 y 属性（这里注意 range 是 [0, 1]）
+const scaleY = createLinear({
+  domain: [94, 150],
+  range: [0, 1],
+})
+
+// 创建一个坐标系
+const coordinate = createCoordinate({
+  // 指定画布的起点和宽高
+  x: 0,
+  y: 0,
+  width: 600,
+  height: 400,
+  // 一系列坐标系变换
+  transforms: [
+    transpose(),
+    cartesian(),
+  ]
+});
+
+for (const { height, weight } of data) {
+  // 通过比例尺将数据的 height 和 weight 属性
+  // 分别映射为点的 x 和 y 属性
+  const attributeX = scaleX(height);
+  const attributeY = scaleY(weight);
+  
+  // 将点的 x 和 y 属性
+  // 映射为最后的画布坐标
+  const [x, y] = coordinate([attributeX, attributeY]);
+  
+  // 绘制点
+  point(x, y);
+}
+```
+
+就像上面的这个例子中坐标系的创建方式一样，每一个坐标系都包含两个部分：**画布的位置和大小**和**一系列坐标系变换函数**。
+
+比如上面的坐标系的画布就是一个从 `(0, 0)` 开始，宽为600，高400的矩形，如下图。
+
+![20211216223918.jpg](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4f6ed8e137d04e9685b1594d63958d3c~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp?)
+
+上面的坐标系包含两个坐标系变换：`transpose` 和 `cartesian`，现在我们不用知道他们具体含义，只用知道它们会把一个统计意义上的点，转换成画布上的点。
+
+统计意义上的点是指：点的两个维度都被归一化了，都在 `[0, 1]` 的范围之内。这样在将点在真正绘制到画布上的之前，我们不用考虑它们的绝对大小，只用关心它们相对大小
+
+### 坐标系变换
+
+坐标系变换会据画布的位置和大小，以及基本变换本身需要的参数去生成一个由基本变换构成的数组。所以所有的坐标系变换都应该接受两个参数：`transformOptions` 和 `canvasOptions`，然后返回一个数组。我们首先通过笛卡尔坐标系变换来理解这个概念。
