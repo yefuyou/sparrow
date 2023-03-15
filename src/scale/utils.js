@@ -1,6 +1,6 @@
 // src/scale/utils.js
 
-export function normalize(value, start, stop) {
+export function normalize (value, start, stop) {
   // 计算比例
   return (value - start) / (stop - start);
 }
@@ -10,7 +10,7 @@ export function normalize(value, start, stop) {
 // 我们希望 step1 满足两个条件：
 // 1. step1 = 10 ^ n * b (其中 b=1,2,5)
 // 2. step0 和 step1 的误差尽量的小
-export function tickStep(min, max, count) {
+export function tickStep (min, max, count) {
   const e10 = Math.sqrt(50); // 7.07
   const e5 = Math.sqrt(10); // 3.16
   const e2 = Math.sqrt(2); // 1.41
@@ -35,7 +35,7 @@ export function tickStep(min, max, count) {
   return step1;
 }
 
-export function ticks(min, max, count) {
+export function ticks (min, max, count) {
   const step = tickStep(min, max, count);
   // 让 start 和 stop 都是 step 的整数倍
   // 这样生成的 ticks 都是 step 的整数倍
@@ -50,31 +50,34 @@ export function ticks(min, max, count) {
   }
   return values;
 }
-
-export function nice(domain, interval) {
+//调整定义域的范围，使得min和max为最近包含原定义域的刻度间隔整数倍
+//domin为传入的原定义域区间，interval为用来映射的函数对象
+export function nice (domain, interval) {
   const [min, max] = domain;
   return [interval.floor(min), interval.ceil(max)];
 }
 
-export function ceil(n, base) {
+export function ceil (n, base) {
   return base * Math.ceil(n / base);
 }
 
-export function floor(n, base) {
+export function floor (n, base) {
   return base * Math.floor(n / base);
 }
 
 // 简单解决 js 的精读问题：0.1 + 0.2 !== 0.3
-export function round(n) {
+export function round (n) {
   return Math.round(n * 1e12) / 1e12;
 }
 
 // 通过对象序列化结果简单判断两个对象是否相等
-export function equal(a, b) {
+export function equal (a, b) {
   return JSON.stringify(a) === JSON.stringify(b);
 }
-
-export function band({ domain, range, padding }) {
+//padding为条之间的间距比例
+// step = bandWidth+padding
+//width(全部定义域)=n*step+padding(每个条两边都有一个padding)
+export function band ({ domain, range, padding }) {
   const [r0, r1] = range;
   const n = domain.length;
   const step = (r1 - r0) / (n + padding);
@@ -86,4 +89,8 @@ export function band({ domain, range, padding }) {
     bandWidth,
     bandRange: new Array(n).fill(0).map(x),
   };
+}
+
+export function log(n, base) {
+  return Math.log(n) / Math.log(base);
 }

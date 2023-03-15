@@ -1,8 +1,6 @@
-// src/scale/quantile.js
-
 import { createThreshold } from './threshold';
 
-export function createQuantile({ domain, range, ...rest }) {
+export function createQuantile ({ domain, range, ...rest }) {
   const n = range.length - 1;
   const sortedDomain = domain.sort((a, b) => a - b);
   const step = (sortedDomain.length - 1) / (n + 1);
@@ -16,3 +14,4 @@ export function createQuantile({ domain, range, ...rest }) {
   });
   return createThreshold({ domain: quantileDomain, range, ...rest });
 }
+// Quantile 比例尺采用了另外得到分割值的策略： 根据数据出现的频率分组。

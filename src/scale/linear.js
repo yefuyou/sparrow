@@ -1,8 +1,5 @@
-// src/scale/linear.js
-
-import {
-  normalize, tickStep, nice, floor, ceil, ticks,
-} from './utils';
+import { tickStep, ticks, floor, ceil, normalize, nice } from './utils';
+import { interpolateNumber } from './interpolate';
 
 export function createLinear({
   domain: [d0, d1],
@@ -14,8 +11,10 @@ export function createLinear({
     return interpolate(t, r0, r1);
   };
 
-  scale.ticks = (tickCount) => ticks(d0, d1, tickCount);
-  scale.nice = (tickCount) => {
+  scale.ticks = (tickCount = 10) => ticks(d0, d1, tickCount);
+  scale.nice = (tickCount = 10) => {
+    if (d0 === d1) return;
+    // the first time
     const step = tickStep(d0, d1, tickCount);
     [d0, d1] = nice([d0, d1], {
       floor: (x) => floor(x, step),
@@ -24,8 +23,4 @@ export function createLinear({
   };
 
   return scale;
-}
-
-export function interpolateNumber(t, start, stop) {
-  return start * (1 - t) + stop * t;
 }

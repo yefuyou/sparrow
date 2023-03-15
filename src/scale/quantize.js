@@ -8,3 +8,4 @@ export function createQuantize({ domain: [d0, d1], range, ...rest }) {
   const quantizeDomain = new Array(n).fill(0).map((_, i) => step * (i + 1));
   return createThreshold({ domain: quantizeDomain, range, ...rest });
 }
+// Quantize 比例尺会根据数据的范围帮我们选择分割值，从而把定义域分成间隔相同的组。

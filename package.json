@@ -37,6 +37,7 @@
     "rollup-plugin-node-resolve": "^5.2.0"
   },
   "dependencies": {
+    "cnpm": "^9.0.1",
     "electron": "^18.2.3"
   },
   "lint-staged": {
