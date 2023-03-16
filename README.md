@@ -221,80 +221,19 @@ const add6 = x => add3(add2(add1(x)));
 const add6 = x => compose(add1, add2, add3)(x);
 ```
 
-## 坐标系理论
+#### reduce方法
 
-其实坐标系本质上也是一个函数，和比例尺的不同的是：比例尺是将数据映射为视觉元素的属性，坐标系是将视觉元素的位置属性映射为在画布上的坐标。坐标系这个函数的函数签名如下:
+**`reduce()`** 方法对数组中的每个元素按序执行一个由您提供的 **reducer** 函数，每一次运行 **reducer** 会将先前元素的计算结果作为参数传入，最后将其结果汇总为单个返回值。
 
-```ts
-// 输入是一个点，这个点的两个维度都是在 [0, 1] 的范围内
-// 输入是一个点，这个点是可以直接绘制到画布坐标上的点
-(point: [number, number]) => [number, number]
-```
+第一次执行回调函数时，不存在“上一次的计算结果”。
+`arr.reduce(callback,[initialValue])`
+reduce 为数组中的每一个元素依次执行回调函数，不包括数组中被删除或从未被赋值的元素，接受四个参数：初始值（或者上一次回调函数的返回值），当前元素值，当前索引，调用 reduce 的数组。
 
-具体的使用看下面的这个例子。
+callback （执行数组中每个值的函数，包含四个参数）
 
-```js
-import { createLinear } from "./scale";
-import { createCoordinate, transpose, cartesian } from './coordinate';
+    1、previousValue （上一次调用回调返回的值，或者是提供的初始值（initialValue））
+    2、currentValue （数组中当前被处理的元素）
+    3、index （当前元素在数组中的索引）
+    4、array （调用 reduce 的数组）
 
-// 我们希望绘制一个散点图来看下面数据的分布
-const data = [
-  { height: 180, weight: 150 },
-  { height: 163, weight: 94 },
-  { height: 173, weight: 130 }
-];
-
-// 将数据的 height 映射为点的 x 属性（这里注意 range 是 [0, 1]）
-const scaleX = createLinear({
-  domain: [163, 180],
-  range: [0, 1]
-});
-
-// 将数据的 width 映射为点的 y 属性（这里注意 range 是 [0, 1]）
-const scaleY = createLinear({
-  domain: [94, 150],
-  range: [0, 1],
-})
-
-// 创建一个坐标系
-const coordinate = createCoordinate({
-  // 指定画布的起点和宽高
-  x: 0,
-  y: 0,
-  width: 600,
-  height: 400,
-  // 一系列坐标系变换
-  transforms: [
-    transpose(),
-    cartesian(),
-  ]
-});
-
-for (const { height, weight } of data) {
-  // 通过比例尺将数据的 height 和 weight 属性
-  // 分别映射为点的 x 和 y 属性
-  const attributeX = scaleX(height);
-  const attributeY = scaleY(weight);
-  
-  // 将点的 x 和 y 属性
-  // 映射为最后的画布坐标
-  const [x, y] = coordinate([attributeX, attributeY]);
-  
-  // 绘制点
-  point(x, y);
-}
-```
-
-就像上面的这个例子中坐标系的创建方式一样，每一个坐标系都包含两个部分：**画布的位置和大小**和**一系列坐标系变换函数**。
-
-比如上面的坐标系的画布就是一个从 `(0, 0)` 开始，宽为600，高400的矩形，如下图。
-
-![20211216223918.jpg](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4f6ed8e137d04e9685b1594d63958d3c~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp?)
-
-上面的坐标系包含两个坐标系变换：`transpose` 和 `cartesian`，现在我们不用知道他们具体含义，只用知道它们会把一个统计意义上的点，转换成画布上的点。
-
-统计意义上的点是指：点的两个维度都被归一化了，都在 `[0, 1]` 的范围之内。这样在将点在真正绘制到画布上的之前，我们不用考虑它们的绝对大小，只用关心它们相对大小
-
-### 坐标系变换
-
-坐标系变换会据画布的位置和大小，以及基本变换本身需要的参数去生成一个由基本变换构成的数组。所以所有的坐标系变换都应该接受两个参数：`transformOptions` 和 `canvasOptions`，然后返回一个数组。我们首先通过笛卡尔坐标系变换来理解这个概念。
+initialValue （作为第一次调用 callback 的第一个参数。）

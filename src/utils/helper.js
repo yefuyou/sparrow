@@ -1,14 +1,62 @@
-// src/utils/helper.js
+export function identity(x) {
+  return x;
+}
+
+export function compose(...fns) {
+  return fns.reduce((total, cur) => (x) => cur(total(x)), identity);
+}
 
 export function curry(fn) {
-  // 获得函数参数的数量
   const arity = fn.length;
   return function curried(...args) {
-    // 如果当前收集到的参数数量大于需要的数量，那么执行该函数
-    if (args.length >= arity) return fn(...args);
-    // 否者，将传入的参数收集起来
-    // 下面的写法类似于
-    // return (...args1) => curried(...args, ...args1);
-    return curried.bind(null, ...args);
+    const newArgs = args.length === 0 ? [undefined] : args;
+    if (newArgs.length >= arity) return fn(...newArgs);
+    return curried.bind(null, ...newArgs);
   };
+}
+
+export function ceil(n, base) {
+  return base * Math.ceil(n / base);
+}
+
+export function floor(n, base) {
+  return base * Math.floor(n / base);
+}
+
+export function round(n) {
+  return Math.round(n * 1e12) / 1e12;
+}
+
+export function normalize(value, start, stop) {
+  return (value - start) / (stop - start);
+}
+
+export function log(n, base) {
+  return Math.log(n) / Math.log(base);
+}
+
+export function nice(domain, interval) {
+  const [min, max] = domain;
+  return [interval.floor(min), interval.ceil(max)];
+}
+
+export function map(object, transform = identity) {
+  return Object.entries(object).reduce((obj, [key, value]) => {
+    obj[key] = transform(value, key);
+    return obj;
+  }, {});
+}
+
+export function assignDefined(target, source) {
+  for (const [key, value] of Object.entries(source)) {
+    if (value !== undefined) target[key] = value;
+  }
+}
+
+export function random(a = 0, b = 1) {
+  return a + (b - a) * Math.random();
+}
+
+export function defined(d) {
+  return d !== undefined && !Number.isNaN(d);
 }

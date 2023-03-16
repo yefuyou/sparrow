@@ -1,4 +1,4 @@
-import { tickStep, ticks, floor, ceil, normalize, nice } from './utils';
+import { tickStep, ticks, floor, ceil, normalize, nice } from '../utils';
 import { interpolateNumber } from './interpolate';
 
 export function createLinear({

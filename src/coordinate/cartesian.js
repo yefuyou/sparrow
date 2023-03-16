@@ -1,12 +1,8 @@
-// src/coordinate/cartesian.js
 import { curry } from '../utils';
-import { scale, translate } from './transforms';
+import { scale, translate } from './transform';
 
 function coordinate(transformOptions, canvasOptions) {
-  // canvasOptions为画布特征
-  const {
-    x, y, width, height,
-  } = canvasOptions;
+  const { x, y, width, height } = canvasOptions;
   return [
     scale(width, height),
     translate(x, y),
@@ -14,4 +10,3 @@ function coordinate(transformOptions, canvasOptions) {
 }
 
 export const cartesian = curry(coordinate);
-// 笛卡尔系变换
