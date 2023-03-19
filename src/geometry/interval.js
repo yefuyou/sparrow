@@ -5,8 +5,10 @@ import { createGeometry } from './geometry';
 
 const channels = createChannels({
   x: createChannel({ name: 'x', scale: 'band', optional: false }),
+  // 这里的 z 通道会绑定一个 band 比例尺，计算间隔在组内的偏移。
   z: createChannel({ name: 'z', scale: 'band' }),
   y1: createChannel({ name: 'y1', optional: false }),
+  // 额外的 y1 通道，用来确定矩形的高度
 });
 
 function render(renderer, I, scales, values, directStyles, coordinate) {

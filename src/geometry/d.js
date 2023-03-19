@@ -6,7 +6,7 @@ export function line([p0, ...points]) {
     ...points.map((p) => ['L', ...p]),
   ];
 }
-
+// 和 line 的区别就是进行了闭合操作
 export function area(points) {
   return [
     ...line(points),
@@ -22,8 +22,10 @@ export function sector([c, p0, p1, p2, p3]) {
   const l1 = a > Math.PI ? 1 : 0;
   return [
     ['M', p0[0], p0[1]],
+    // 外弧
     ['A', r, r, 0, l, 1, p1[0], p1[1]],
     ['L', p2[0], p2[1]],
+    // 内弧
     ['A', r1, r1, 0, l1, 0, p3[0], p3[1]],
     ['Z'],
   ];

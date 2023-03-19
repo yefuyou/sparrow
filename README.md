@@ -223,7 +223,7 @@ const add6 = x => compose(add1, add2, add3)(x);
 
 #### reduce方法
 
-**`reduce()`** 方法对数组中的每个元素按序执行一个由您提供的 **reducer** 函数，每一次运行 **reducer** 会将先前元素的计算结果作为参数传入，最后将其结果汇总为单个返回值。
+**`reduce()`** 方法对数组中的每个元素按序执行一个由您提供的 **reduce**函数，每一次运行 **reducer** 会将先前元素的计算结果作为参数传入，最后将其结果汇总为单个返回值。
 
 第一次执行回调函数时，不存在“上一次的计算结果”。
 `arr.reduce(callback,[initialValue])`
@@ -237,3 +237,13 @@ callback （执行数组中每个值的函数，包含四个参数）
     4、array （调用 reduce 的数组）
 
 initialValue （作为第一次调用 callback 的第一个参数。）
+
+## 几何图形-Geometry
+
+### **`Object.entries()`**
+
+**`Object.entries()`**方法返回一个给定对象自身可枚举属性的键值对数组，其排列与使用 [`for...in`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/for...in) 循环遍历该对象时返回的顺序一致（区别在于 for-in 循环还会枚举原型链中的属性）。
+
+###   `const isOrdinal = !!scale.bandWidth;`
+
+双非运算符，强制将变量转为Boolean类型

@@ -13,7 +13,7 @@ export function createGeometry(channels, render) {
     }
     return render(renderer, I, scales, values, styles, coordinate);
   };
-
+// 将需要的通道返回
   geometry.channels = () => channels;
 
   return geometry;

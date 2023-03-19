@@ -49,8 +49,10 @@ export function text(context, attributes) {
 // 'M 10 10 L 100 100 L 100 10 Z'
 export function path(context, attributes) {
   const { d } = attributes;
-  return shape('path', context, { ...attributes, d: d.flat().join(' ') });
+  const path = Array.isArray(d) ? d.flat().join(' ') : d;
+  return shape('path', context, { ...attributes, d: path });
 }
+
 
 export function ring(context, attributes) {
   // r1 是内圆的半径，r2 是外圆的半径
