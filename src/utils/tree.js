@@ -13,3 +13,4 @@ export function bfs(root, callback) {
     discovered.push(...(node.children || []));
   }
 }
+// 广度优先遍历

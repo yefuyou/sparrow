@@ -1,3 +1,2 @@
-// src/index.js
+export * from './plot/index';
 
-export { drawRedRect } from './drawRedRect';

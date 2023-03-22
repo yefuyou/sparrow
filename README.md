@@ -247,3 +247,49 @@ initialValue （作为第一次调用 callback 的第一个参数。）
 ###   `const isOrdinal = !!scale.bandWidth;`
 
 双非运算符，强制将变量转为Boolean类型
+
+## api设计
+
+Sparrow 最终只暴露出一个函数：`plot`。该函数根据指定的 options 渲染图表并且返回一个渲染好的 SVG 元素。函数签名可以用 TypeScript 简单地如下定义：
+
+```js
+plot(options: SPSpec): SVGSVGElement
+```
+
+至于这个 options 的结构用 TypeScript 可以简单地如下定义：
+
+```ts
+type SPSpec = SPNode;
+
+type SPNode = {
+  type?: string;
+  data?: any[],
+  scales?: Recode<ChannelTypes, Scale>,
+  transforms?: Transform[],
+  statistics?: Statistic[],
+  encodings?: Recode<ChannelTypes, Encode>,
+  guides?: Recode<ChannelTypes, Guide>,
+  styles?: Record<string, string>
+  children?: SPNode[];
+  paddingLeft?: number,
+  paddingRight?: number,
+  paddingTop?: number,
+  paddingBottom?: number,
+}
+```
+
+每一个节点的 type 除了上一章提到的 layer、col、row 这些**容器节点**之外，还可以是所有几何元素的类型：interval、area、text 等等，这些被称为**视图节点**，当然上一章提到的 facet 节点也算是一个视图节点。容器节点可以有 children 属性，但是视图节点不能有 children 属性。
+
+下面对上面的节点的一些属性进行解释：
+
+- data：任意类型的数据。
+- scales：比例尺的配置，比如：`{type: 'ordinal', range: ['red', 'yellow']}`
+- transforms：数据预处理配置，比如：`data => data.sort()`
+- statistics：统计函数配置，比如：`{type: 'stackY'}`
+- encodings：指定几何元素的每个通道用什么编码，比如：`{x: 'genre', y: 'sold'}`
+- guides：指定辅助组件的配置，比如：`{type: 'axisY', display: false}`
+- styles：指定几何元素的样式，比如：`{strokeWidth: 10}`
+- paddingLeft：几何图形区域到整个图表区域的左边距。
+- paddingRight：几何图形区域到整个图表区域的右边距。
+- paddingTop：几何图形区域到整个图表区域的上边距。
+- paddingBottom：几何图形区域到整个图表区域的下边距。
