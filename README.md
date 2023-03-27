@@ -2,23 +2,63 @@
 
 本项目是基于掘金课程[可视化入门：从 0 到 1 开发一个图表库](https://juejin.cn/book/7031893648145186824)进行的简易图表库开发
 
-### 遇到的问题&bug
+3.28更新 昨天面试的美团，在面试的过程中面试官很认真地看了我的readme文件，感到内心十分惭愧，决定逐步更新我的readme并且把我没有做完的工程化相关工作做了。
+
+## 在按课程操作过程遇到的问题&bug
 
 1. `cross-env DEBUG_MODE=1 npx jest`报错
 
    使用`npm run test`或者`npm run test-live即可`
-   
+
+​	**在这里被面试官问了，你知不知道npx和npm的区别555**
+
+​	简单来说，npm 是一个 node 包管理器，npx 是一个 Node 包执行器。
+
+​	NPM 是 Node 包管理器。NPM 内置在 Node.js 中，通过命令行工具 CLI 来和线上 NPM 	数据库进行交互，这个数据库被称为 NPM Register，NPX 是一个 Node 包执行器，该 	Node 包可以是本地也可以是远程的。允许开发者在无	需安装的情况下执行任意 	Node 包。
+
 2. git提交报错 `husky - pre-commit hook exited with code 1 (error)`
 
-[(53条消息) 使用pre commit钩子再git commit时报错“husky - pre-commit hook exited with code 1 (error)”_仙女爱吃鱼的博客-CSDN博客](https://blog.csdn.net/weixin_38318244/article/details/126184481)
+​	其实还是本地不能运行脚本的问题
 
-## scale部分计算
+## 项目相关的环境配置以及技术选型
 
-1. 使用对数减少误差
+### SVG和Canvas 2D的区别
 
-```js
-let step1 = 10 ** Math.floor(Math.log(step0) / Math.LN10);
-```
+SVG 的优点是方便交互，因为它也有 DOM 结构，可以方便地监听事件。但是性能方面却有所影响：如果我们要绘制的图形非常复杂，这些元素节点的数量就会非常多。而节点数量多，就会大大增加 DOM 树渲染和重绘所需要的时间。
+
+相比来说，Canvas 交互实现就不太容易，因为对每个图形的拾取（判断鼠标点位置在哪个图形上）需要开发者自己实现（很多渲染引擎会解决这个问题，我们后面会看到），但是它的绘制性能却相对较优。
+
+所以当数据量不大且侧重交互的情况，用 SVG 比较合适；当数据量较大的时候用 Canvas 比较合适。
+
+**Sparrow 将选择 SVG 而不是 Canvas2D 来作为绘图技术，这是因为 Sparrow 对性能没有要求，同时 SVG 相对于 Canvas2D 更好测试一点（SVG 有 DOM 结构，可以直接检查 DOM 来进行调试）。**
+
+### echarts与其他图表库的横向对比
+
+![image.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fff4706e9f6f4c92baf8f726ee1b2608~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp?)
+
+垂直方向是按照抽象程度来分类的，越底层的工具抽象程度越低，灵活性越强，易用性越差；越高层的工具抽象程度越高，易用性越强。水平方向是按照归属来分类的，左边的工具是来自于 AntV 技术栈的工具，右边的工具是来自于社区优秀的开源工具。
+
+#### 渲染引擎
+
+首先是渲染引擎，渲染引擎会对浏览器的原生 API 进行封装，主要目的是为了简化我们绘制图形的流程。（化了最后的数据绘制流程，没有简化我们的数据处理流程，或者一些通用功能（坐标轴，图例这些））
+
+#### 低级可视化模块
+
+渲染引擎会对浏览器的原生 API 进行封装，主要目的是为了简化我们绘制图形的流程。各个流程仍强依赖于人的参与。
+
+#### 可视化语法
+
+可视化语法就能大幅度减少人的参与，同时保持相对可观的灵活性。
+
+可视化语法的开山鼻祖可以说是：**图形语法**，目前前端有名的在可视化语法这一层级的工具 [G2](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fantvis%2FG2)，[Vega-Lite](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvega%2Fvega-lite) 等都或多或少借鉴它的思想。
+
+#### 高级可视化绘制模块
+
+高级可视化绘制模块和可视化语层级一样，都不会显式指明可视化图表的类型，但是这些模块不一定是所有图表都通用的，同时在不同的可视化工具中功能也不一样。
+
+
+
+
 
 
 
