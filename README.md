@@ -4,92 +4,27 @@
 
 3.28更新 昨天面试的美团，在面试的过程中面试官很认真地看了我的readme文件，感到内心十分惭愧，决定逐步更新我的readme并且把我没有做完的工程化相关工作做了。
 
-## 在按课程操作过程遇到的问题&bug
+## 项目笔记与心得
+
+### 在按课程操作过程遇到的问题&bug
 
 1. `cross-env DEBUG_MODE=1 npx jest`报错
 
    使用`npm run test`或者`npm run test-live即可`
-
-​	**在这里被面试官问了，你知不知道npx和npm的区别555**
-
-​	简单来说，npm 是一个 node 包管理器，npx 是一个 Node 包执行器。
-
-​	NPM 是 Node 包管理器。NPM 内置在 Node.js 中，通过命令行工具 CLI 来和线上 NPM 	数据库进行交互，这个数据库被称为 NPM Register，NPX 是一个 Node 包执行器，该 	Node 包可以是本地也可以是远程的。允许开发者在无	需安装的情况下执行任意 	Node 包。
+   
+   **在这里被面试官问了，你知不知道npx和npm的区别555**
+   
+   简单来说，npm 是一个 node 包管理器，npx 是一个 Node 包执行器。
+   
+   NPM 是 Node 包管理器。NPM 内置在 Node.js 中，通过命令行工具 CLI 来和线上 NPM 数据库进行交互，这个数据库被称为 NPM Register，NPX 是一个 Node 包执行器，该 Node包可以是本地也可以是远程的。允许开发者在无需安装的情况下执行任意 Node 包。
 
 2. git提交报错 `husky - pre-commit hook exited with code 1 (error)`
 
 ​	其实还是本地不能运行脚本的问题
 
-## 项目相关的环境配置以及技术选型
+### 函数化编程
 
-### SVG和Canvas 2D的区别
-
-SVG 的优点是方便交互，因为它也有 DOM 结构，可以方便地监听事件。但是性能方面却有所影响：如果我们要绘制的图形非常复杂，这些元素节点的数量就会非常多。而节点数量多，就会大大增加 DOM 树渲染和重绘所需要的时间。
-
-相比来说，Canvas 交互实现就不太容易，因为对每个图形的拾取（判断鼠标点位置在哪个图形上）需要开发者自己实现（很多渲染引擎会解决这个问题，我们后面会看到），但是它的绘制性能却相对较优。
-
-所以当数据量不大且侧重交互的情况，用 SVG 比较合适；当数据量较大的时候用 Canvas 比较合适。
-
-**Sparrow 将选择 SVG 而不是 Canvas2D 来作为绘图技术，这是因为 Sparrow 对性能没有要求，同时 SVG 相对于 Canvas2D 更好测试一点（SVG 有 DOM 结构，可以直接检查 DOM 来进行调试）。**
-
-### echarts与其他图表库的横向对比
-
-![image.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fff4706e9f6f4c92baf8f726ee1b2608~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp?)
-
-垂直方向是按照抽象程度来分类的，越底层的工具抽象程度越低，灵活性越强，易用性越差；越高层的工具抽象程度越高，易用性越强。水平方向是按照归属来分类的，左边的工具是来自于 AntV 技术栈的工具，右边的工具是来自于社区优秀的开源工具。
-
-#### 渲染引擎
-
-首先是渲染引擎，渲染引擎会对浏览器的原生 API 进行封装，主要目的是为了简化我们绘制图形的流程。（化了最后的数据绘制流程，没有简化我们的数据处理流程，或者一些通用功能（坐标轴，图例这些））
-
-#### 低级可视化模块
-
-渲染引擎会对浏览器的原生 API 进行封装，主要目的是为了简化我们绘制图形的流程。各个流程仍强依赖于人的参与。
-
-#### 可视化语法
-
-可视化语法就能大幅度减少人的参与，同时保持相对可观的灵活性。
-
-可视化语法的开山鼻祖可以说是：**图形语法**，目前前端有名的在可视化语法这一层级的工具 [G2](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fantvis%2FG2)，[Vega-Lite](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvega%2Fvega-lite) 等都或多或少借鉴它的思想。
-
-#### 高级可视化绘制模块
-
-高级可视化绘制模块和可视化语层级一样，都不会显式指明可视化图表的类型，但是这些模块不一定是所有图表都通用的，同时在不同的可视化工具中功能也不一样。
-
-
-
-
-
-
-
-1. `m**n = m^n`
-
-**幂赋值**（**`\**=`**）运算符将左侧变量的值设置为右操作数的幂次方。
-
-2. 下面的函数返回以 `x` 为底 `y` 的对数（即 logx y）：
-
-   ```js
-   function getBaseLog(x, y) {
-       return Math.log(y) / Math.log(x);
-   }
-   ```
-
-
-
-2. `getTime()`:**`getTime()`** 方法返回一个时间的格林威治时间数值。
-
-   
-
-### :black_nib:测试用例修改（小册内vs仓库）
-
-
-
-1. linear比例尺拆分interpolateNumber方法至单独文件
-2. util从单个文件扩展至模块
-
-## coordinate坐标轴
-
-### 函数式编程
+#### 一等公民
 
 一等公民：一等公民（First Class）的意思是：在函数式编程中，函数是一等公民。
 
@@ -105,6 +40,8 @@ const logAddWithDelay = logfiy((x, y, z) => add(x, y, z));
 // ✅  和上面的写法保持一致
 const logAdd = logify(add);
 ```
+
+#### 纯函数
 
 纯函数：纯函数就是当输入参数保持一致的情况下返回结果也保持一致的函数。
 
@@ -148,7 +85,7 @@ a // [1, 2, 3]
 - 便携性：一方面意味着这个函数容易理解，因为它的所有依赖都体现在参数里面。另一方面，意味着这个函数可以在任何地方运行，因为它需要的东西都是通过参数传递的。但是在面向对象编程中却不是这样，Erlang 的创建者 Joe Armstrong 说："在面向对象编程的世界里，我想要一个香蕉，却得到了一片丛林"
 - 可测试：我们只用给函数输入然后断言输出即可，不需要提供额外的状态。
 - 可并行运行：因为不会访问外部变量，所以不会访问共享的内存，从而不会出现竞争。
-- 可缓存：可以根据输入将输出缓存下来，下面是一个简单的实现。
+- 可缓存：可以根据输入将输出缓存下来，下面是一个简单的实现。（被momenta面试官抓住狠狠拷打了55）
 
 ```js
 const memoize = (f) => {
@@ -195,7 +132,7 @@ const pureFn = pureMultiply(a, add(b, c));
 const impureFn = (a, b, c) => impureMultiply(a, add(b, c));
 ```
 
-### 函数柯里化（Currying）
+#### 函数柯里化（Currying）
 
 函数柯里化（Currying）的概念很简单：我们可以用少于期望数量的参数去调用一个函数，这个函数返回一个接受剩下参数的函数。
 
@@ -241,7 +178,7 @@ function curry(fn) {
 
 最后说一下可以发现柯里化后的函数非常契合纯函数的输入一个输出一个的特点：接受一个参数，返回一个接受剩余参数的函数。
 
-### 函数复合（Compose）
+#### 函数复合（Compose）
 
 当一个值要经过多个函数转换，才能变成另外一个值，就可以把这些函数合成一个函数。这样，这个值就只用通过复合后的函数转换一次，就可以获得对应结果了。我们希望实现一个 `compose` 函数来自动帮助我们方便得合成函数，期望的使用方式如下。
 
@@ -261,7 +198,17 @@ const add6 = x => add3(add2(add1(x)));
 const add6 = x => compose(add1, add2, add3)(x);
 ```
 
-#### reduce方法
+哈哈一看就是reduce实现的
+
+```js
+export function compose(...fns) {
+  return fns.reduce((total, cur) => (x) => cur(total(x)), identity);
+}
+```
+
+###### reduce方法
+
+555好丢人阿里面试加笔想用reduce忘了api了现场求面试官让我现查的
 
 **`reduce()`** 方法对数组中的每个元素按序执行一个由您提供的 **reduce**函数，每一次运行 **reducer** 会将先前元素的计算结果作为参数传入，最后将其结果汇总为单个返回值。
 
@@ -278,17 +225,53 @@ callback （执行数组中每个值的函数，包含四个参数）
 
 initialValue （作为第一次调用 callback 的第一个参数。）
 
-## 几何图形-Geometry
+### 一些没见过的运算符、api记录
 
-### **`Object.entries()`**
+1. `m**n = m^n`
+
+**幂赋值**（**`\**=`**）运算符将左侧变量的值设置为右操作数的幂次方。
+
+2. 下面的函数返回以 `x` 为底 `y` 的对数（即 logx y）：
+
+   ```js
+   function getBaseLog(x, y) {
+       return Math.log(y) / Math.log(x);
+   }
+   ```
+
+3. *`Object.entries()`
 
 **`Object.entries()`**方法返回一个给定对象自身可枚举属性的键值对数组，其排列与使用 [`for...in`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/for...in) 循环遍历该对象时返回的顺序一致（区别在于 for-in 循环还会枚举原型链中的属性）。
 
-###   `const isOrdinal = !!scale.bandWidth;`
+4. `const isOrdinal = !!scale.bandWidth;`
 
 双非运算符，强制将变量转为Boolean类型
 
-## api设计
+## 项目目标以及项目组成
+
+通过以下的JS对象去描述图表：
+
+```js
+jsimport { plot } from "@sparrow-vis/sparrow";
+
+const data = [
+  { name: "questions", value: 17 },
+  { name: "schools", value: 25 },
+  { name: "philosophers", value: 35 },
+];
+
+const chart = plot({
+  data,
+  type: "interval",
+  encodings: {
+    x: "name",
+    y: "value",
+    fill: "name"
+  }
+});
+
+document.getElementById("container").appendChild(chart);
+```
 
 Sparrow 最终只暴露出一个函数：`plot`。该函数根据指定的 options 渲染图表并且返回一个渲染好的 SVG 元素。函数签名可以用 TypeScript 简单地如下定义：
 
@@ -333,3 +316,143 @@ type SPNode = {
 - paddingRight：几何图形区域到整个图表区域的右边距。
 - paddingTop：几何图形区域到整个图表区域的上边距。
 - paddingBottom：几何图形区域到整个图表区域的下边距。
+
+
+
+![img](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4c6c10529aa1492eaffaa83d9dc2688a~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+
+
+
+## 项目相关的环境配置以及技术选型
+
+### SVG和Canvas 2D的区别
+
+SVG 的优点是方便交互，因为它也有 DOM 结构，可以方便地监听事件。但是性能方面却有所影响：如果我们要绘制的图形非常复杂，这些元素节点的数量就会非常多。而节点数量多，就会大大增加 DOM 树渲染和重绘所需要的时间。
+
+相比来说，Canvas 交互实现就不太容易，因为对每个图形的拾取（判断鼠标点位置在哪个图形上）需要开发者自己实现（很多渲染引擎会解决这个问题，我们后面会看到），但是它的绘制性能却相对较优。
+
+所以当数据量不大且侧重交互的情况，用 SVG 比较合适；当数据量较大的时候用 Canvas 比较合适。
+
+**Sparrow 将选择 SVG 而不是 Canvas2D 来作为绘图技术，这是因为 Sparrow 对性能没有要求，同时 SVG 相对于 Canvas2D 更好测试一点（SVG 有 DOM 结构，可以直接检查 DOM 来进行调试）。**
+
+### echarts与其他图表库的横向对比
+
+![image.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fff4706e9f6f4c92baf8f726ee1b2608~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp?)
+
+垂直方向是按照抽象程度来分类的，越底层的工具抽象程度越低，灵活性越强，易用性越差；越高层的工具抽象程度越高，易用性越强。水平方向是按照归属来分类的，左边的工具是来自于 AntV 技术栈的工具，右边的工具是来自于社区优秀的开源工具。
+
+#### 渲染引擎
+
+首先是渲染引擎，渲染引擎会对浏览器的原生 API 进行封装，主要目的是为了简化我们绘制图形的流程。（化了最后的数据绘制流程，没有简化我们的数据处理流程，或者一些通用功能（坐标轴，图例这些））
+
+#### 低级可视化模块
+
+渲染引擎会对浏览器的原生 API 进行封装，主要目的是为了简化我们绘制图形的流程。各个流程仍强依赖于人的参与。
+
+#### 可视化语法
+
+可视化语法就能大幅度减少人的参与，同时保持相对可观的灵活性。
+
+可视化语法的开山鼻祖可以说是：**图形语法**，目前前端有名的在可视化语法这一层级的工具 [G2](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fantvis%2FG2)，[Vega-Lite](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvega%2Fvega-lite) 等都或多或少借鉴它的思想。
+
+#### 高级可视化绘制模块
+
+高级可视化绘制模块和可视化语层级一样，都不会显式指明可视化图表的类型，但是这些模块不一定是所有图表都通用的，同时在不同的可视化工具中功能也不一样。
+
+#### sparrow所在的层级
+
+Sparrow，是一个基于图形语法的可视化框架
+
+## 项目详细文档
+
+### render渲染引擎
+
+#### render与普通svg绘图对比
+
+普通svg绘图的绘制流程：
+
+之前在使用 SVG 开发一个条形图的过程中，我们发现有一些地方不方便。比如我们每次绘制一个元素，都需要三步：创建元素，设置元素属性，最后再挂载元素。
+
+```js
+// 创建元素 
+const rect = createSVGElement('rect'); 
+
+// 设置属性 
+rect.setAttribute('x', 10); 
+rect.setAttribute('y', 10); 
+rect.setAttribute('fill', 'red'); 
+rect.setAttribute('width', 50); 
+rect.setAttribute('height', 50); 
+
+// 挂载元素 
+g.appendChild('rect');
+```
+
+#### render功能设计
+
+因为 Sparrow 的功能相对简单，所以我们渲染器的功能用不复杂，主要侧重于更加轻松地绘制并且管理图形元素，简化我们绘制图形的流程。它主要有两个功能：
+
+- 绘制基本图形：支持 `rect`、`circle`、`line`、`path`、`text`、`ring` 这几种基本图形的绘制。
+- 进行坐标系变换：支持 `translate`，`scale`，`rotate` 这三种变换，同时可以使用类似 `Canvas2D` 的 `save` 和 `restore` 去管理坐标系变换的状态。
+
+使用方法：
+
+```js
+import { createRenderer } from 'renderer'; 
+
+// 创建渲染器
+const renderer = createRenderer(600, 400);
+
+// 绘制基本图形 
+renderer.rect({
+  x: 10, 
+  y: 10, 
+  width: 50, 
+  height: 50, 
+  fill: 'red', 
+});
+
+// 坐标变换 
+renderer.save(); 
+renderer.scale(2, 2); 
+renderer.rect({ 
+  x: 10, 
+  y: 10, 
+  width: 50, 
+  height: 50 
+}); 
+```
+
+#### 后期提升（待做）
+
+更换绘图工具，更改render的底层实现
+
+### scale比例尺
+
+比例尺是可视化中一个很重要且有用的抽象，主要用于将数据的某一个属性映射为图形的视觉属性，比如名字属性映射图形的颜色属性，身高属性映射为图形的位置属性。
+
+**而在可视化中的比例尺，就是用来度量数据属性的，将数据抽象的属性映射为一个视觉属性**。这决定了我们如何理解图形的颜色、大小、形状和位置等。选择一个比例尺的时候，需要我们去思考度量的是什么以及这些度量的含义，最终这些选择将决定我们如何理解一个图形。
+
+**比例尺本质上是一个函数**，会将一个值（变量）从一个特定的范围（定义域）映射到另一个特定的范围（值域）。定义域（Domain）是由数据的属性决定，值域（Range）是由图形的视觉属性决定。根据定义域和值域的不同，我们需要选择不同的比例尺。
+
+**比例尺类型及使用场景**
+
+#### Identity恒等映射
+
+它的功能和它的名字一样：“恒等映射”，也就是将输入原封不动的返回。
+
+当希望数据的属性和图形的视觉属性保持一致的时候，我们就可以使用 Identity 比例尺，比如数据有一个属性是 color，而我们又希望我们图形的填充颜色和 color 保持一致，这个时候我们就可以使用 Identity 比例尺。
+
+![img](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/adfdfe54e4a74aae8dc650b23c759bd6~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+
+Identity 比例尺的使用方式如下，它能保证输入和输出总是保持一致。
+
+```js
+// Identity 是恒等映射，所以不需要指定定义域和值域
+const scale = createIdentity();
+
+scale(1); // 1
+scale({ a: 1 }); // { a: 1 }
+scale('sparrow'); // 'sparrow'
+```
+
