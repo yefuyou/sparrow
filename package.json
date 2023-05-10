@@ -1,7 +1,7 @@
 {
-  "name": "sparrow",
+  "name": "sparrow-mini",
   "version": "1.1.0",
-  "description": "",
+  "description": "本项目是基于掘金课程[可视化入门：从 0 到 1 开发一个图表库](https://juejin.cn/book/7031893648145186824)进行的简易图表库开发",
   "main": "index.js",
   "scripts": {
     "ci": "run-s lint test build",
@@ -12,37 +12,44 @@
     "prepare": "husky install"
   },
   "keywords": [],
-  "author": "",
+  "author": "yefuyou",
   "license": "ISC",
   "devDependencies": {
-    "@babel/cli": "^7.17.10",
-    "@babel/core": "^7.17.10",
-    "@babel/preset-env": "^7.17.10",
+    "@babel/cli": "^7.21.5",
+    "@babel/core": "^7.21.8",
+    "@babel/preset-env": "^7.21.5",
     "@commitlint/cli": "^16.3.0",
     "@commitlint/config-conventional": "^16.2.4",
     "cross-env": "^7.0.3",
-    "eslint": "^8.15.0",
+    "eslint": "^8.40.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.26.0",
-    "husky": "^8.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "husky": "^8.0.3",
     "install": "^0.13.0",
-    "jest": "^26.0.1",
+    "jest": "^26.6.3",
     "jest-electron": "^0.1.12",
-    "lint-staged": "^12.4.1",
+    "lint-staged": "^12.5.0",
     "npm": "^8.10.0",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
-    "rollup": "^2.73.0",
+    "rollup": "^2.79.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-node-resolve": "^5.2.0"
   },
   "dependencies": {
-    "cnpm": "^9.0.1",
-    "electron": "^18.2.3"
+    "electron": "^18.3.15"
   },
   "lint-staged": {
     "*.js": [
       "eslint --fix"
     ]
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yefuyou/sparrow.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yefuyou/sparrow/issues"
+  },
+  "homepage": "https://github.com/yefuyou/sparrow#readme"
 }
