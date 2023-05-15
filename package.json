@@ -1,6 +1,6 @@
 {
   "name": "sparrow-mini",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "本项目是基于掘金课程[可视化入门：从 0 到 1 开发一个图表库](https://juejin.cn/book/7031893648145186824)进行的简易图表库开发",
   "main": "lib/sparrow.js",
   "module": "esm/sparrow.js",
