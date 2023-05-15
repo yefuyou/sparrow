@@ -1,8 +1,10 @@
 {
   "name": "sparrow-mini",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "本项目是基于掘金课程[可视化入门：从 0 到 1 开发一个图表库](https://juejin.cn/book/7031893648145186824)进行的简易图表库开发",
-  "main": "index.js",
+  "main": "lib/sparrow.js",
+  "module": "esm/sparrow.js",
+  "unpkg": "dist/sparrow.min.js",
   "scripts": {
     "ci": "run-s lint test build",
     "test": "jest --coverage",
@@ -11,7 +13,6 @@
     "build": "rimraf -rf ./dist ./lib ./esm && rollup --config",
     "prepare": "husky install"
   },
-  "keywords": [],
   "author": "yefuyou",
   "license": "ISC",
   "devDependencies": {
@@ -39,6 +40,15 @@
   "dependencies": {
     "electron": "^18.3.15"
   },
+  "files": [
+    "src",
+    "lib",
+    "esm",
+    "dist"
+  ],
+  "keywords": [
+    "visualization"
+  ],
   "lint-staged": {
     "*.js": [
       "eslint --fix"
